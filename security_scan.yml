@@ -1,0 +1,69 @@
+# Nome do fluxo de trabalho.
+# Este nome aparecerá na aba "Actions" do seu repositório.
+name: Fluxo de Trabalho de Segurança AppSec
+
+# Define o gatilho para a execução do fluxo de trabalho.
+# Neste caso, ele será executado em cada 'push' para a branch 'main'
+# e em cada 'pull_request' que tiver como alvo a branch 'main'.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Define um único trabalho (job) chamado 'security_scan'.
+# Um job é um conjunto de passos que são executados em uma única máquina virtual.
+jobs:
+  security_scan:
+    # O tipo de máquina virtual que o trabalho será executado.
+    # 'ubuntu-latest' é uma boa escolha para a maioria dos projetos.
+    runs-on: ubuntu-latest
+    
+    # Define os passos (steps) que serão executados sequencialmente.
+    steps:
+    
+      # Passo 1: Checkout do código
+      # Usa a ação oficial do GitHub para clonar o repositório.
+      # Isso é necessário para que os scanners tenham acesso aos arquivos do projeto.
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+        with:
+          # Permite que o CodeQL tenha acesso ao histórico completo do Git.
+          fetch-depth: 0
+
+      # Passo 2: Configuração do Node.js
+      # A OWASP Juice Shop é uma aplicação Node.js, então precisamos do ambiente Node.
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # A versão mais recente do Node.js recomendada para o projeto.
+          
+      # Passo 3: Instalação das dependências
+      # Instala todas as dependências do projeto listadas no 'package.json'.
+      # Isso é crucial para que a análise de dependências funcione corretamente.
+      - name: Instalar Dependências
+        run: npm install
+
+      # --- Análise de Segurança ---
+
+      # Passo 4: Análise Estática de Código (SAST) com CodeQL
+      # O CodeQL é uma ferramenta poderosa de análise estática nativa do GitHub.
+      # Ele busca por vulnerabilidades conhecidas no código-fonte.
+      - name: Inicializar o CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript # Define a linguagem de programação a ser analisada.
+
+      - name: Construir o Projeto
+        run: |
+          # Use o comando apropriado para construir o projeto, se necessário.
+          # Para a Juice Shop, o 'npm install' já preparou a maioria das coisas.
+          echo "Projeto construído (npm install)"
+
+      - name: Analisar o Código com CodeQL
+        uses: github/codeql-action/analyze@v3
+        
+      # Passo 5: Verificação de Dependências com Dependency Review
+      # Esta ação verifica se as dependências do seu projeto possuem vulnerabilidades conhecidas.
+      - name: Análise de Dependências
+        uses: actions/dependency-review-action@v4
