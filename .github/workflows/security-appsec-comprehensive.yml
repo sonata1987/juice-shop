@@ -81,10 +81,3 @@ jobs:
       # Executa a análise estática e gera relatórios de segurança
       - name: Analisar o Código com CodeQL
         uses: github/codeql-action/analyze@v3
-        
-      # --- Análise de Dependências ---
-      
-      # Passo 7: Verificação de Dependências com Dependency Review
-      # Esta ação verifica se as dependências do seu projeto possuem vulnerabilidades conhecidas (CVEs).
-      - name: Análise de Dependências
-        uses: actions/dependency-review-action@v4

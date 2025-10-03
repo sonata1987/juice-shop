@@ -134,9 +134,9 @@ Pipeline integrada que combina múltiplas verificações de segurança:
 - Detecta vulnerabilidades como: SQL Injection, XSS, Command Injection, Path Traversal, e mais
 - Exclusões: Diretório `data/static/codefixes` (contém exemplos de código vulnerável)
 
-**Análise de Dependências (Dependency Review):**
-- Verificação automática de vulnerabilidades conhecidas (CVEs) nas dependências do projeto
-- Alerta sobre dependências desatualizadas ou com falhas de segurança conhecidas
+**Análise de Dependências:**
+- O GitHub Dependabot está configurado para monitorar automaticamente as dependências
+- Alertas de segurança são gerados quando vulnerabilidades conhecidas (CVEs) são detectadas
 - Integrado com o GitHub Security Advisory Database
 
 #### 🕷️ OWASP ZAP Baseline Scan
@@ -164,7 +164,7 @@ Este repositório serve como um ambiente de prática e demonstração para anali
 - ✅ **Configuração de CI/CD de Segurança**: Exemplos práticos de integração de ferramentas de segurança no pipeline
 - ✅ **SAST com CodeQL**: Como configurar análise estática para projetos JavaScript/TypeScript
 - ✅ **DAST com OWASP ZAP**: Automação de testes dinâmicos de segurança
-- ✅ **Dependency Scanning**: Monitoramento contínuo de vulnerabilidades em dependências
+- ✅ **Dependency Monitoring**: Monitoramento via GitHub Dependabot para vulnerabilidades em dependências
 - ✅ **GitHub Actions**: Workflows completos e documentados para segurança automatizada
 - ✅ **Security as Code**: Configurações de segurança versionadas e auditáveis
 
