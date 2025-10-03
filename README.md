@@ -6,6 +6,8 @@
 [![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/owasp_juiceshop?style=social)](https://reddit.com/r/owasp_juiceshop)
 
 ![CI/CD Pipeline](https://github.com/juice-shop/juice-shop/workflows/CI/CD%20Pipeline/badge.svg?branch=master)
+[![CodeQL](https://github.com/sonata1987/juice-shop/workflows/An%C3%A1lise%20de%20Seguran%C3%A7a%20AppSec%20Completa/badge.svg)](https://github.com/sonata1987/juice-shop/actions/workflows/security-appsec-comprehensive.yml)
+[![ZAP Scan](https://github.com/sonata1987/juice-shop/workflows/ZAP%20Baseline%20Scan/badge.svg)](https://github.com/sonata1987/juice-shop/actions/workflows/zap_scan.yml)
 [![Coverage Status](https://coveralls.io/repos/github/juice-shop/juice-shop/badge.svg?branch=develop)](https://coveralls.io/github/juice-shop/juice-shop?branch=develop)[![Cypress tests](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/3hrkhu/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/3hrkhu/runs)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/223/badge)](https://www.bestpractices.dev/projects/223)
 ![GitHub stars](https://img.shields.io/github/stars/juice-shop/juice-shop.svg?label=GitHub%20%E2%98%85&style=flat)
@@ -40,6 +42,7 @@ For a detailed introduction, full list of features and architecture overview ple
     - [Packaged Distributions](#packaged-distributions)
     - [Docker Container](#docker-container)
     - [Vagrant](#vagrant)
+- [Segurança e AppSec](#segurança-e-appsec-security--appsec)
 - [Demo](#demo)
 - [Documentation](#documentation)
     - [Node.js version compatibility](#nodejs-version-compatibility)
@@ -112,6 +115,90 @@ For a detailed introduction, full list of features and architecture overview ple
    of the repository)
 3. Run `cd vagrant && vagrant up`
 4. Browse to [192.168.56.110](http://192.168.56.110)
+
+## Segurança e AppSec (Security & AppSec)
+
+Este fork inclui pipelines automatizadas de segurança implementadas via GitHub Actions para demonstrar boas práticas de Application Security (AppSec).
+
+### 🔒 Pipelines de Segurança Configuradas
+
+#### 📊 Análise de Segurança AppSec Completa
+[![CodeQL](https://github.com/sonata1987/juice-shop/workflows/An%C3%A1lise%20de%20Seguran%C3%A7a%20AppSec%20Completa/badge.svg)](https://github.com/sonata1987/juice-shop/actions/workflows/security-appsec-comprehensive.yml)
+
+Pipeline integrada que combina múltiplas verificações de segurança:
+
+**SAST (Static Application Security Testing) - CodeQL:**
+- Análise estática de segurança automatizada do código JavaScript/TypeScript
+- Execução: A cada push e pull request na branch `master`
+- Queries: Security-extended (conjunto expandido de verificações de segurança)
+- Detecta vulnerabilidades como: SQL Injection, XSS, Command Injection, Path Traversal, e mais
+- Exclusões: Diretório `data/static/codefixes` (contém exemplos de código vulnerável)
+
+**Análise de Dependências (Dependency Review):**
+- Verificação automática de vulnerabilidades conhecidas (CVEs) nas dependências do projeto
+- Alerta sobre dependências desatualizadas ou com falhas de segurança conhecidas
+- Integrado com o GitHub Security Advisory Database
+
+#### 🕷️ OWASP ZAP Baseline Scan
+[![ZAP Scan](https://github.com/sonata1987/juice-shop/workflows/ZAP%20Baseline%20Scan/badge.svg)](https://github.com/sonata1987/juice-shop/actions/workflows/zap_scan.yml)
+
+**DAST (Dynamic Application Security Testing):**
+- Scan de segurança dinâmico usando OWASP ZAP (Zed Attack Proxy)
+- Identifica vulnerabilidades em tempo de execução através de testes automatizados
+- Execução: Semanal (todos os sábados às 18:00 UTC)
+- Alvo: Instância preview do Juice Shop (`https://preview.owasp-juice.shop`)
+- Configuração customizada: Ver [`.zap/rules.tsv`](.zap/rules.tsv) para regras ignoradas
+
+**Vulnerabilidades detectadas pelo ZAP:**
+- Configurações incorretas de segurança
+- Cabeçalhos HTTP ausentes ou mal configurados
+- Vulnerabilidades de injeção
+- Problemas de autenticação e sessão
+- E muito mais...
+
+### 📚 Recursos para Analistas de AppSec
+
+Este repositório serve como um ambiente de prática e demonstração para analistas de segurança de aplicações (AppSec):
+
+#### O que você pode aprender aqui:
+- ✅ **Configuração de CI/CD de Segurança**: Exemplos práticos de integração de ferramentas de segurança no pipeline
+- ✅ **SAST com CodeQL**: Como configurar análise estática para projetos JavaScript/TypeScript
+- ✅ **DAST com OWASP ZAP**: Automação de testes dinâmicos de segurança
+- ✅ **Dependency Scanning**: Monitoramento contínuo de vulnerabilidades em dependências
+- ✅ **GitHub Actions**: Workflows completos e documentados para segurança automatizada
+- ✅ **Security as Code**: Configurações de segurança versionadas e auditáveis
+
+#### Arquivos de Configuração Importantes:
+- [`/.github/workflows/security-appsec-comprehensive.yml`](.github/workflows/security-appsec-comprehensive.yml) - Pipeline principal de segurança
+- [`/.github/workflows/zap_scan.yml`](.github/workflows/zap_scan.yml) - Configuração do OWASP ZAP
+- [`/.zap/rules.tsv`](.zap/rules.tsv) - Regras customizadas para o ZAP scan
+
+#### Integrações de Segurança GitHub:
+- **Security Tab**: Todos os alerts e vulnerabilidades são centralizados
+- **Dependabot**: Alertas automáticos de segurança para dependências
+- **Code Scanning**: Resultados do CodeQL visíveis diretamente nos PRs
+- **Secret Scanning**: Detecção automática de credenciais expostas
+
+### 🎯 Casos de Uso para AppSec
+
+**Para Estudantes e Iniciantes:**
+- Ambiente real para aprender sobre pipelines de segurança
+- Exemplos de configuração de ferramentas SAST e DAST
+- Código comentado em português para facilitar o aprendizado
+
+**Para Profissionais:**
+- Template para implementar segurança em projetos Node.js
+- Referência de boas práticas em DevSecOps
+- Base para criar seus próprios pipelines de segurança
+
+**Para Entrevistas e Portfolio:**
+- Demonstra conhecimento prático em ferramentas de AppSec
+- Mostra experiência com GitHub Actions e automação
+- Evidência de habilidades em SAST, DAST e análise de dependências
+
+---
+
+**Nota sobre Vulnerabilidades Intencionais**: Este projeto OWASP Juice Shop é **intencionalmente vulnerável** para fins educacionais. As pipelines de segurança configuradas detectam e reportam essas vulnerabilidades propositalmente, demonstrando como as ferramentas funcionam em cenários reais.
 
 ## Demo
 
